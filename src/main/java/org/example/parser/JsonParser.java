@@ -4,13 +4,29 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class JsonParser {
-    public JSONObject jsonToObject(String jsonInput){
+    public JSONObject jsonToObject(String jsonFile){
+        String jsonHalf = "";
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject = null;
-        try {
-            jsonObject = (JSONObject) jsonParser.parse(jsonInput);
-        } catch (ParseException e) {
+        String line = "";
+        String jsonWhole = "";
+        try(BufferedReader br = new BufferedReader(new FileReader(jsonFile))) {
+            while((line=br.readLine())!=null){
+                jsonWhole += line;
+            }
+            jsonHalf = jsonWhole.substring(jsonWhole.indexOf("###")+3);
+            jsonObject = (JSONObject) jsonParser.parse(jsonHalf);
+            if(jsonObject.containsKey("reg_date")){
+                String value = jsonObject.get("reg_date").toString();
+                jsonObject.put("regdate", jsonObject.get("reg_date"));
+                jsonObject.remove("reg_date");
+            }
+        } catch (ParseException | IOException e) {
             throw new RuntimeException(e);
         }
         return jsonObject;

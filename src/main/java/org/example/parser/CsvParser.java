@@ -7,13 +7,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CsvParser {
-    public Map<String, String> csvToMap() throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader("C:/Users/User/Desktop/compare.csv"));
+    public Map<String, String> csvToMap(String csvFile) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(csvFile));
         String line =  null;
         HashMap<String,String> map = new HashMap<String, String>();
         while((line=br.readLine())!=null){
-        String str[] = line.split("\t");
-        map.put(str[0].substring(str[0].indexOf(".")+1,str[0].length()), str[1]);
+            if(line.equals("###")){
+                break;
+            }
+            String str[] = line.split("\t");
+            map.put(str[0].substring(str[0].indexOf(".")+1,str[0].length()), str[1]);
         }
         return map;
     }
