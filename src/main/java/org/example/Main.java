@@ -1,9 +1,6 @@
 package org.example;
 
-import org.example.parser.CsvParser;
-import org.example.parser.CsvWriter;
-import org.example.parser.FileIntegrator;
-import org.example.parser.JsonParser;
+import org.example.parser.*;
 
 import java.io.IOException;
 import java.nio.file.*;
@@ -14,6 +11,7 @@ public class Main {
         CsvParser csvParser = new CsvParser();
         JsonParser jsonParser = new JsonParser();
         CsvWriter csvWriter = new CsvWriter();
+        ExcelWriter excelWriter = new ExcelWriter();
 
         // 트리거 타겟 디렉토리
         String targetDirectory = "C:/Users/User/Desktop/targetDirectory";
@@ -26,7 +24,7 @@ public class Main {
 
         // CSV, JSON 파일 합치기
         FileIntegrator fileIntegrator = new FileIntegrator();
-        fileIntegrator.integrateFile();
+        fileIntegrator.integrateFile(args);
         while(true){
 
             // 읽어들일 파일
@@ -41,7 +39,10 @@ public class Main {
                 if(kind.equals(StandardWatchEventKinds.ENTRY_CREATE)){
 
                     // CSV 파일 작성 메서드
-                    csvWriter.writeResult(csvParser.csvToMap(targetFile),jsonParser.jsonToObject(targetFile));
+//                    csvWriter.writeResult(csvParser.csvToMap(targetFile),jsonParser.jsonToObject(targetFile));
+
+                    // xslx 파일 생성 메서드
+                    excelWriter.dataWriter(csvParser.csvToMap(targetFile,args),jsonParser.jsonToObject(targetFile,args));
                 }
             }
             if(!watchKey.reset()) break;

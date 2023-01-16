@@ -3,7 +3,7 @@ package org.example.parser;
 import java.io.*;
 
 public class FileIntegrator {
-    public void integrateFile(){
+    public void integrateFile(String[] args){
         String csvFilePath = "C:/Users/User/Desktop/csvFolder";
         String jsonFilePath = "C:/Users/User/Desktop/jsonFolder";
         String resultFilePath = "C:/Users/User/Desktop/targetDirectory";
@@ -42,9 +42,12 @@ public class FileIntegrator {
                 bw.write(line);
                 bw.newLine();
             }
-            bw.write("###");
+            bw.write(args[0]);
             bw.newLine();
             while ((line=jsonReader.readLine()) != null){
+                if(line.contains("null")){
+                    line = line.replace("null", "\"null\"");
+                }
                 bw.write(line);
                 bw.newLine();
             }

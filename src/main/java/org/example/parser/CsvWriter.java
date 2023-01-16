@@ -11,13 +11,13 @@ import java.util.*;
 
 public class CsvWriter {
     public void writeResult(Map<String, String> csvData, JSONObject jsonData){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy_mm_dd_HH_mm_ss");
 
         // 파일 이름 형식 rowkey+현재시간
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy_mm_dd_HH_mm_ss");
         String fileName = csvData.get("rowkey")+sdf.format(new Date(System.currentTimeMillis()))+".csv";
 
         // 저장위치
-        File csv = new File("C:/Users/User/Desktop/"+fileName);
+        File csv = new File("../resources/"+fileName);
 
         // 중복데이터를 거르기위한 체크리스트 생성
         List<String> checkList = new ArrayList<>();
@@ -42,6 +42,7 @@ public class CsvWriter {
                     // 무시할 키 설정
                     if(key.equalsIgnoreCase("rowkey") || key.equalsIgnoreCase("extract_date") || key.equalsIgnoreCase("extract_date_time")
                     || key.equalsIgnoreCase("kafka_topic") || key.equalsIgnoreCase("kafka_partition") || key.equalsIgnoreCase("kafka_offset")){
+                        checkList.add(key);
                         continue;
                     }
 

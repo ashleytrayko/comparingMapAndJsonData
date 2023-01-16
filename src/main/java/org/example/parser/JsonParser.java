@@ -9,7 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class JsonParser {
-    public JSONObject jsonToObject(String jsonFile){
+    public JSONObject jsonToObject(String jsonFile, String[] args){
         String jsonHalf = "";
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject = null;
@@ -19,7 +19,7 @@ public class JsonParser {
             while((line=br.readLine())!=null){
                 jsonWhole += line;
             }
-            jsonHalf = jsonWhole.substring(jsonWhole.indexOf("###")+3);
+            jsonHalf = jsonWhole.substring(jsonWhole.indexOf(args[0])+args[0].length());
             jsonObject = (JSONObject) jsonParser.parse(jsonHalf);
             if(jsonObject.containsKey("reg_date")){
                 String value = jsonObject.get("reg_date").toString();
